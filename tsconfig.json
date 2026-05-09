@@ -9,25 +9,11 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
-    "jsx": "react-jsx",
-    "declaration": true,
-    "declarationDir": "dist",
-    "outDir": "dist",
-    "rootDir": "src",
-    "baseUrl": "src",
-    "paths": {
-      "@atoms/*":     ["atoms/*"],
-      "@molecules/*": ["molecules/*"],
-      "@organisms/*": ["organisms/*"],
-      "@templates/*": ["templates/*"],
-      "@pages/*":     ["pages/*"],
-      "@types/*":     ["types/*"],
-      "@tokens/*":    ["tokens/*"]
-    }
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
