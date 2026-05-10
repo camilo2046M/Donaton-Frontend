@@ -1,6 +1,6 @@
 import React from 'react';
-import { Topbar }       from '../organisms/TopBar';
-import { StatsRow }     from '../organisms/StatRow';
+import { Topbar }       from '../organisms/Topbar';
+import { StatsRow }     from '../organisms/StatsRow';
 import { NeedCardGrid } from '../organisms/NeedCardGrid';
 import type { Necesidad } from '../../types';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Topbar }        from '../organisms/TopBar';
-import { StatsRow }      from '../organisms/StatRow';
-import { ShipmentTable } from '../organisms/Shipmenttable';
+import { Topbar }        from '../organisms/Topbar';
+import { StatsRow }      from '../organisms/StatsRow';
+import { ShipmentTable } from '../organisms/ShipmentTable';
 import type { Envio, EnvioFallback, Necesidad } from '../../types';
 
 export interface DashboardLayoutProps {
