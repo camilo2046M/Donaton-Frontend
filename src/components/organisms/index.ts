@@ -1,15 +1,15 @@
-export { StatsRow }       from './StatRow';
-export { ShipmentTable }  from './Shipmenttable';
+export { StatsRow }       from './StatsRow';
+export { ShipmentTable }  from './ShipmentTable';
 export { NeedCardGrid }   from './NeedCardGrid';
-export { PlanForm }       from './Planform';
+export { PlanForm }       from './PlanForm';
 export { NeedReportForm } from './NeedReportForm';
-export { Sidebar }        from './SideBar';
-export { Topbar }         from './TopBar';
+export { Sidebar }        from './Sidebar';
+export { Topbar }         from './Topbar';
 
-export type { StatsRowProps }       from './StatRow';
-export type { ShipmentTableProps }  from './Shipmenttable';
-export type { NeedCardGridProps }   from './NeedCardGrid';
-export type { PlanFormProps }       from './Planform';
-export type { NeedReportFormProps } from './NeedReportForm';
-export type { SidebarProps, NavItem } from './SideBar';
-export type { TopbarProps, TopbarAction } from './TopBar';
+export type { StatsRowProps }            from './StatsRow';
+export type { ShipmentTableProps }       from './ShipmentTable';
+export type { NeedCardGridProps }        from './NeedCardGrid';
+export type { PlanFormProps }            from './PlanForm';
+export type { NeedReportFormProps }      from './NeedReportForm';
+export type { SidebarProps, NavItem }    from './Sidebar';
+export type { TopbarProps, TopbarAction} from './Topbar';

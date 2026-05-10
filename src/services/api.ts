@@ -1,22 +1,85 @@
-import axios from 'axios';
+import type {
+  Envio,
+  EnvioFallback,
+  Necesidad,
+  NuevoEnvio,
+  NuevaNecesidad,
+  ApiError,
+} from '../types';
 
-// Instancia base apuntando al BFF
-const apiBff = axios.create({
-    baseURL: 'http://localhost:8080/api/bff',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
+// ─── Cliente base ─────────────────────────────────────────────────────────────
 
-// Función para obtener los envíos desde el BFF
-export const obtenerEnvios = async () => {
-    try {
-        const response = await apiBff.get('/logistica/envios');
-        return response.data;
-    } catch (error) {
-        console.error("Error al conectar con el BFF", error);
-        throw error;
-    }
+async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    ...options,
+  });
+
+  if (!res.ok) {
+    // Parsea el error estandarizado del GlobalExceptionHandler
+    const err: ApiError = await res.json().catch(() => ({
+      timestamp: new Date().toISOString(),
+      status: res.status,
+      error: res.statusText,
+      message: 'Error inesperado. Intenta nuevamente.',
+      path: url,
+    }));
+    throw err;
+  }
+
+  return res.json();
+}
+
+// ─── Logística ────────────────────────────────────────────────────────────────
+
+export const logisticaApi = {
+  /**
+   * GET /api/bff/logistica/envios
+   * Puede retornar fallback si el microservicio está caído.
+   */
+  getEnvios: (): Promise<Envio[] | EnvioFallback[]> =>
+    apiFetch('/api/bff/logistica/envios'),
+
+  /**
+   * POST /api/bff/logistica/envios
+   */
+  crearEnvio: (data: NuevoEnvio): Promise<Envio> =>
+    apiFetch('/api/bff/logistica/envios', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  /**
+   * PATCH /api/bff/logistica/envios/:id/estado
+   */
+  actualizarEstado: (id: number, estado: string): Promise<Envio> =>
+    apiFetch(`/api/bff/logistica/envios/${id}/estado`, {
+      method: 'PATCH',
+      body: JSON.stringify({ estado }),
+    }),
 };
 
-export default apiBff;
+// ─── Necesidades ──────────────────────────────────────────────────────────────
+
+export const necesidadesApi = {
+  /**
+   * GET /api/bff/necesidades
+   */
+  getNecesidades: (): Promise<Necesidad[]> =>
+    apiFetch('/api/bff/necesidades'),
+
+  /**
+   * POST /api/bff/necesidades
+   */
+  crearNecesidad: (data: NuevaNecesidad): Promise<Necesidad> =>
+    apiFetch('/api/bff/necesidades', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  /**
+   * PATCH /api/bff/necesidades/:id/atender
+   */
+  atenderNecesidad: (id: number): Promise<{ id: number; estado: string }> =>
+    apiFetch(`/api/bff/necesidades/${id}/atender`, { method: 'PATCH' }),
+};

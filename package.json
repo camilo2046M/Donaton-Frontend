@@ -1,6 +1,6 @@
 {
   "name": "@donaton/ui",
-  "type":"module",
+  "type": "module",
   "version": "2.0.0",
   "description": "Biblioteca de componentes React+TypeScript para Donaton — Atomic Design",
   "main": "dist/index.js",
@@ -10,12 +10,12 @@
     "dist"
   ],
   "scripts": {
-  "dev": "vite",
-  "build": "rollup -c",
-  "build:watch": "rollup -c --watch",
-  "test": "vitest",
-  "coverage": "vitest run --coverage"
-},
+    "dev": "vite",
+    "build": "rollup -c",
+    "build:watch": "rollup -c --watch",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
@@ -30,12 +30,14 @@
     "@storybook/addon-vitest": "^10.3.6",
     "@storybook/react-vite": "^10.3.6",
     "@testing-library/react": "^14.0.0",
+    "@types/node": "^25.6.2",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/browser-playwright": "^4.1.5",
     "@vitest/coverage-v8": "^4.1.5",
     "eslint-plugin-storybook": "^10.3.6",
+    "jsdom": "^29.1.1",
     "playwright": "^1.59.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

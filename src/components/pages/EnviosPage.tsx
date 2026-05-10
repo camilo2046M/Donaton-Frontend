@@ -1,30 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LogisticsLayout } from '../templates/LogisticsLayout';
-import type { Envio, EnvioFallback, NuevoEnvio } from '../../types';
-
-const MOCK_ENVIOS: Envio[] = [
-  { id: 1, centroAcopioOrigen: 'Centro Norte - Iquique',     destino: 'Comunidad Afectada - Alto Hospicio', tipoTransporte: 'TERRESTRE', estado: 'EN_PREPARACION', fechaCreacion: '2026-05-07T14:30:00' },
-  { id: 2, centroAcopioOrigen: 'Centro Central - Santiago',  destino: 'Hospital Regional',                  tipoTransporte: 'AEREO',     estado: 'EN_RUTA',        fechaCreacion: '2026-05-07T15:45:00' },
-  { id: 3, centroAcopioOrigen: 'Centro Sur - Concepción',    destino: 'Albergue Talcahuano',                tipoTransporte: 'TERRESTRE', estado: 'ENTREGADO',      fechaCreacion: '2026-05-06T09:10:00' },
-  { id: 4, centroAcopioOrigen: 'Centro Norte - Antofagasta', destino: 'Villa Rural Calama',                 tipoTransporte: 'MARITIMO',  estado: 'EN_PREPARACION', fechaCreacion: '2026-05-07T08:00:00' },
-];
+import { logisticaApi }    from '../../services/api';
+import { useToast }         from '../../hooks/useToast';
+import type { Envio, EnvioFallback, NuevoEnvio, ApiError } from '../../types';
 
 export const EnviosPage: React.FC = () => {
-  const [envios, setEnvios]   = useState<Envio[] | EnvioFallback[]>(MOCK_ENVIOS);
-  const [loading]             = useState<boolean>(false);
+  const [envios, setEnvios]   = useState<Envio[] | EnvioFallback[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving]   = useState<boolean>(false);
+  const { showError, showSuccess } = useToast();
 
+  // ── Carga inicial ─────────────────────────────────────────────────────────
+  useEffect(() => {
+    logisticaApi.getEnvios()
+      .then(setEnvios)
+      .catch((err: ApiError) => showError(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // ── Crear envío ───────────────────────────────────────────────────────────
   async function crearEnvio(data: NuevoEnvio): Promise<void> {
     setSaving(true);
-    // Reemplazar con: await fetch('/api/bff/logistica/envios', { method: 'POST', body: JSON.stringify(data) });
-    const nuevo: Envio = {
-      id: Date.now(),
-      ...data,
-      estado: 'EN_PREPARACION',
-      fechaCreacion: new Date().toISOString(),
-    };
-    setEnvios((prev: Envio[] | EnvioFallback[]) => [...(prev as Envio[]), nuevo]);
-    setSaving(false);
+    try {
+      const nuevo = await logisticaApi.crearEnvio(data);
+      setEnvios((prev) => [...(prev as Envio[]), nuevo]);
+      showSuccess('Envío registrado correctamente.');
+    } catch (err) {
+      showError(err as ApiError);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
