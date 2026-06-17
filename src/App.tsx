@@ -4,8 +4,9 @@ import { DashboardPage } from './components/pages/DashboardPage';
 import { EnviosPage }    from './components/pages/EnviosPage';
 import { NecesidadesPage } from './components/pages/NecesidadesPage';
 import { ReportarPage }  from './components/pages/ReportarPage';
+import { DonacionesPage } from './components/pages';
 
-type ViewKey = 'dashboard' | 'envios' | 'necesidades' | 'reportar' | 'acopios';
+type ViewKey = 'dashboard' | 'envios' | 'necesidades' | 'reportar' | 'acopios' | 'donaciones';
 
 export const App: React.FC = () => {
   const [view, setView] = useState<ViewKey>('dashboard');
@@ -16,6 +17,7 @@ export const App: React.FC = () => {
       case 'envios':      return <EnviosPage />;
       case 'necesidades': return <NecesidadesPage />;
       case 'reportar':    return <ReportarPage />;
+      case 'donaciones':  return <DonacionesPage/>;
       default:            return <DashboardPage onNavigate={(k: string) => setView(k as ViewKey)} />;
     }
   };

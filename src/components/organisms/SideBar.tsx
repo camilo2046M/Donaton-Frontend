@@ -19,6 +19,7 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'acopios',     label: 'Centros de Acopio',icon: '🏪', section: 'Logística'    },
   { key: 'necesidades', label: 'Reportes (Admin)', icon: '📋', section: 'Necesidades'  },
   { key: 'reportar',    label: 'Solicitar Ayuda',  icon: '➕', section: 'Necesidades'  },
+  {key:'donaciones', label: 'Donación',icon: '🤝', section:'Donación'}
 ];
 
 // Agrupar por sección

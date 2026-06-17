@@ -83,3 +83,25 @@ export const necesidadesApi = {
   atenderNecesidad: (id: number): Promise<{ id: number; estado: string }> =>
     apiFetch(`/api/bff/necesidades/${id}/atender`, { method: 'PATCH' }),
 };
+
+// ── Agregar esto al archivo src/services/api.ts existente ────────────────────
+// (al final del archivo, después de necesidadesApi)
+
+import type { Donacion, NuevaDonacion } from '../types';
+
+export const donacionesApi = {
+  /** GET /api/bff/donaciones */
+  listarDonaciones: (): Promise<Donacion[]> =>
+    apiFetch('/api/bff/donaciones'),
+
+  /** POST /api/bff/donaciones */
+  crearDonacion: (data: NuevaDonacion): Promise<Donacion> =>
+    apiFetch('/api/bff/donaciones', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  /** PATCH /api/bff/donaciones/{id}/completar */
+  completarDonacion: (id: number): Promise<{ id: number; estado: string }> =>
+    apiFetch(`/api/bff/donaciones/${id}/completar`, { method: 'PATCH' }),
+};
