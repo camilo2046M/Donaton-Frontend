@@ -4,6 +4,8 @@ export type EstadoEnvio     = 'EN_PREPARACION' | 'EN_RUTA' | 'ENTREGADO' | 'FALL
 export type EstadoNecesidad = 'PENDIENTE' | 'ATENDIDA';
 export type EstadoBadge     = EstadoEnvio | EstadoNecesidad;
 export type TipoTransporte  = 'TERRESTRE' | 'AEREO' | 'MARITIMO';
+export type TipoDonacion   = 'INDIVIDUAL' | 'EMPRESARIAL';
+export type EstadoDonacion = 'PENDIENTE' | 'COMPLETADA';
 
 /** GET /api/bff/logistica/envios — ítem */
 export interface Envio {
@@ -55,6 +57,29 @@ export interface ApiError {
   message: string;
   path: string;
 }
+
+/** GET /api/bff/donaciones — ítem */
+export interface Donacion {
+  id: number;
+  tipo: TipoDonacion;
+  monto: number;
+  donanteNombre: string;
+  nombreObjeto: string;
+  estado: EstadoDonacion;
+  rutEmpresa?: string;           // solo EMPRESARIAL
+  certificadoImpuestos?: string; // solo EMPRESARIAL
+}
+ 
+/** POST /api/bff/donaciones — payload */
+export interface NuevaDonacion {
+  tipo: TipoDonacion;
+  monto: number;
+  nombre: string;
+  objeto: string;
+  rut?: string;
+  certificado?: string;
+}
+ 
 
 /** Helpers de tipo */
 export function isEnvioFallback(
