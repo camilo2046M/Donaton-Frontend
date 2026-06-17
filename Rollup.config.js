@@ -19,6 +19,7 @@ export default {
         '**/*.test.tsx', 
         '**/*.test.ts',
         'src/main.tsx',
+        'src/App.tsx',
         'src/services/**',
         'src/views/**'
       ] 
