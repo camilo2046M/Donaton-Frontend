@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../templates/DashboardLayout';
 import { logisticaApi, necesidadesApi } from '../../services/api';
 import { useToast } from '../../hooks/useToast';
+import { isEnvioFallback } from '../../types'; // <-- Importamos tu validador de fallback
 import type { Envio, Necesidad, ApiError } from '../../types';
 
 export interface DashboardPageProps {
@@ -19,14 +20,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   useEffect(() => {
     setLoading(true);
     
-    // Promise.all ejecuta ambas peticiones de red en paralelo
     Promise.all([
-      logisticaApi.getEnvios(),
-      necesidadesApi.getNecesidades()
+      logisticaApi.getEnvios().catch((err) => {
+        console.error("Error capturado en Logística (Circuit Breaker activo):", err);
+        return []; // Retornamos arreglo vacío para que no rompa el Promise.all completo
+      }),
+      necesidadesApi.getNecesidades().catch((err) => {
+        console.error("Error capturado en Necesidades:", err);
+        return [];
+      })
     ])
       .then(([enviosData, necesidadesData]) => {
-        setEnvios(enviosData as Envio[]);
-        setNecesidades(necesidadesData);
+        // Usamos tu helper para comprobar si el BFF nos mandó un objeto de contingencia/fallback
+        if (isEnvioFallback(enviosData)) {
+          console.warn("Logística devolvió contingencia controlada.");
+          setEnvios([]); // Ponemos la lista vacía para que la interfaz diga de forma limpia "No hay envíos"
+        } else {
+          setEnvios(enviosData as Envio[]);
+        }
+        
+        setNecesidades(necesidadesData as Necesidad[]);
       })
       .catch((err: ApiError) => {
         showError(err);
@@ -34,13 +47,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, []); // El array vacío asegura que esto solo corra una vez al montar el componente
+  }, [showError]);
 
   // ── Renderizado condicional de carga ──────────────────────────────────────
-  // Si tu DashboardLayout no maneja un prop "loading", puedes mostrar un mensaje aquí.
-  // (Si tu layout sí lo soporta, puedes pasárselo como prop al igual que en LogisticsLayout).
   if (loading) {
-    return <div style={{ padding: '2rem', textAlign: 'center' }}>Cargando resumen del sistema...</div>;
+    return (
+      <div style={{ 
+        padding: '2rem', 
+        textAlign: 'center', 
+        fontFamily: 'sans-serif', 
+        color: '#666' 
+      }}>
+        Sincronizando con la red operacional Donatón...
+      </div>
+    );
   }
 
   return (
