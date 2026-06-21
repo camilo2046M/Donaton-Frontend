@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sidebar } from './components/organisms/Sidebar';
+import { Sidebar } from '../src/components/organisms/SideBar';
 import { DashboardPage } from './components/pages/DashboardPage';
 import { EnviosPage }    from './components/pages/EnviosPage';
 import { NecesidadesPage } from './components/pages/NecesidadesPage';

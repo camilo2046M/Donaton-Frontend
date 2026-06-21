@@ -2,7 +2,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 // Importamos tu componente (ajusta la ruta si es necesario)
-import { Sidebar } from './Sidebar';
+import { Sidebar } from '../components/organisms/SideBar';
 
 // 'describe' agrupa todas las pruebas de un mismo componente
 describe('Componente Sidebar', () => {
