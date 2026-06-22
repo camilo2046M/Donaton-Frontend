@@ -30,6 +30,17 @@ async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
+export const bffApi = {
+  /**
+   * GET /api/bff/dashboard/resumen
+   * Este endpoint (que deben crear en su servidor Spring Boot BFF) 
+   * es el que debe ir internamente a buscar los datos a Logística y Necesidades,
+   * armando un único JSON consolidado.
+   */
+  getDashboardResumen: (): Promise<{ envios: Envio[]; necesidades: Necesidad[] }> =>
+    apiFetch('/api/bff/dashboard/resumen'),
+};
+
 // ─── Logística ────────────────────────────────────────────────────────────────
 
 export const logisticaApi = {
