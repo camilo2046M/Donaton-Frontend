@@ -47,6 +47,7 @@ export interface NuevoEnvio {
   centroAcopioOrigen: string;
   destino: string;
   tipoTransporte: TipoTransporte;
+  donacionId: number;
 }
 
 /** Error estandarizado — GlobalExceptionHandler */

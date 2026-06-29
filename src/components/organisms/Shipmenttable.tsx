@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { TabBar }         from '../molecules/TabBar';
 import { TableRow }       from '../molecules/TableRow';
-import { FallbackBanner } from '../molecules/FallbackBanner';
 import { Spinner }        from '../atoms/Spinner';
 import type { Envio, EstadoEnvio, EnvioFallback } from '../../types';
 import { isEnvioFallback } from '../../types';
+import { FallbackBanner } from '../molecules';
 
 export interface ShipmentTableProps {
   data: Envio[] | EnvioFallback[];
